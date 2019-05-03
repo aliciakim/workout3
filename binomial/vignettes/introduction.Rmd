@@ -1,0 +1,119 @@
+---
+title: "introduction"
+author: "Alicia Kim"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(binomial)
+```
+
+
+## Overview of Binomial Distribution
+
+### bin_choose()
+
+Calculate the number of combinations in which _k_ successes can occur in _n_ trials using bin_choose().
+
+Note that k can be a range.
+
+```{r}
+bin_choose(n=5, k=2)
+bin_choose(n=5, k=1:3)
+```
+
+### bin_probability()
+
+Calculate the probability of getting a number of successes in a certain amount of trials with a specified probability of success (in decimal form).
+```{r}
+bin_probability(trials = 5, success = 2, prob = 0.1)
+
+bin_probability(trials=5, success = 1:3, prob = 0.5)
+
+```
+
+
+### bin_distribution
+
+Outputs a dataframe with primary class _bindis_.  This dataframe has one column for successes and one for probability.
+
+```{r}
+bin_distribution(trials=5, prob=0.5)
+```
+
+You can also plot this dataframe.
+
+```{r}
+dis1 <- bin_distribution(trials=5, prob=0.5)
+plot(dis1)
+```
+
+### bin_cumulative
+
+Outputs a dataframe with primary class _bincum_.  This dataframe has one column for successes and one for probability, just like bin_distribution.  It also has a column for cumulative probability of successes.
+
+```{r}
+bin_cumulative(trials=5, prob=0.5)
+```
+
+You can also plot this dataframe.
+
+```{r}
+dis2 <- bin_cumulative(trials=5, prob=0.5)
+plot(dis2)
+```
+
+### bin_variable
+
+Outputs an object of class _binvar_, which is a list with named elements, trials and prob.  Trials is number of trials and prob is the probability of success.
+
+```{r}
+bin1 <- bin_variable(trials=10, p=0.3)
+bin1
+```
+
+
+Besides seeing _binvar_ parameters, you can also obtain summary measures for this object.
+
+Calling summary.binvar() returns an object of class _summary.binvar_ which is a list of elements, trials, prob, mean, variance, mode, skewness, and kurtosis.
+
+```{r}
+bin1 <- bin_variable(trials=10, p=0.3)
+binsum1 <- summary(bin1)
+binsum1
+```
+
+### Functions of Measure
+
+Without creating a new object, these functions let you calculate summary measurements given just trials and probability arguments.
+
+Mean: the expected value of the binomial distribution. _np_
+    bin_mean(trials, prob) 
+Variance: _np(1-p)_.  STD is simply square root of this variance.
+    bin_variance(trials, prob)
+Mode: most likely number of successes in n trials with a certain probability. It is equal to the greater integer less than or equal to _np+p_
+    bin_mode(trials, prob)
+Skewness: Measure the asymmetry of the probability distribution of a random variable about its mean.  Can be positive, negative, or undefined.  _(1-2p) / STD _
+    bin_skewness(trials, prob)
+Kurtosis: Measure of the "tailedness" of the probability distribution of a random variable.  _(1-6p)(1-p)/ variance_
+    bin_kurtosis(trials, prob)
+    
+```{r}
+bin_mean(10,0.3)
+bin_variance(10,0.3)
+bin_mode(10,0.3)
+bin_skewness(10,0.3)
+bin_kurtosis(10,0.3)
+```
+
